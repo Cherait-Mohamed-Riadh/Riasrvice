@@ -592,7 +592,7 @@ async function handleFormSubmit(e) {
 
     // Success UI updates
     showFormSuccess();
-    statusEl.textContent = 'تم إرسال رسالتك بنجاح. سنعود إليك قريبًا.';
+    statusEl.textContent = 'Your message has been sent successfully. We will get back to you soon.';
     statusEl.className = 'form__success show';
     resetForm();
 
@@ -605,7 +605,7 @@ async function handleFormSubmit(e) {
       statusEl.id = 'form-status';
       DOM.contactForm.appendChild(statusEl);
     }
-    statusEl.textContent = 'حدث خطأ أثناء الإرسال. تحقق من اتصالك وحاول مرة أخرى.';
+    statusEl.textContent = 'Something went wrong while sending. Check your connection and try again.';
     statusEl.className = 'form__error show';
 
     submitButton.classList.remove('loading');
