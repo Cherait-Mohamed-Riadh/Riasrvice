@@ -402,8 +402,9 @@ const validationRules = {
   },
   phone: {
     required: false,
-    pattern: /^[\+]?[1-9][\d]{0,15}$/,
-    message: 'Please enter a valid phone number'
+    // Accept international formats like +213 540306187, allow spaces and hyphens
+    pattern: /^[\+]?[0-9\s\-]{7,15}$/,
+    message: ''
   },
   service: {
     required: true,

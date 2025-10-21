@@ -1410,11 +1410,14 @@
                             <div class="form__row">
                             <div class="form__group">
                                 <label for="phone" class="form__label">Phone Number</label>
+                                <!-- تم تعديل حقل رقم الهاتف ليقبل الأرقام الدولية مثل +213 -->
                                 <input 
                                     type="tel" 
                                     id="phone" 
                                     name="phone" 
                                     class="form__input" 
+                                    placeholder="+213 540306187"
+                                    pattern="^\+?[0-9\s\-]{7,15}$"
                                     aria-describedby="phone-error"
                                 >
                                 <span class="form__error" id="phone-error"></span>
