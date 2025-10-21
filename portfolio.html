@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>All Projects | Ria Academy Services</title>
+  <link rel="stylesheet" href="assets/css/styles.css" />
+  <link rel="stylesheet" href="assets/css/enhancements.css" />
+</head>
+<body>
+  <header class="header" id="header">
+    <nav class="nav container">
+      <div class="nav__brand">
+        <a href="index.html#home" class="nav__logo hover-raise" aria-label="Ria Academy Services home">
+          <img src="images/logo 2.png" alt="Ria Academy Services logo" class="logo-img logo--x4" width="48" height="48" />
+          <span class="logo-text">Ria Academy Services</span>
+        </a>
+      </div>
+      <div class="nav__menu" id="nav-menu">
+        <ul class="nav__list">
+          <li class="nav__item"><a href="index.html#home" class="nav__link">Home</a></li>
+          <li class="nav__item"><a href="index.html#about" class="nav__link">About</a></li>
+          <li class="nav__item"><a href="index.html#participants" class="nav__link">Team</a></li>
+          <li class="nav__item"><a href="#all-projects" class="nav__link active">Portfolio</a></li>
+          <li class="nav__item"><a href="index.html#contact" class="nav__link">Contact</a></li>
+          <li class="nav__item"><a href="index.html#services" class="nav__link">Services</a></li>
+          <li class="nav__item"><a href="index.html#testimonials" class="nav__link">Testimonials</a></li>
+          <li class="nav__item"><a href="index.html#why-choose" class="nav__link">Why&nbsp;Us</a></li>
+        </ul>
+        <div class="nav__close" id="nav-close" aria-label="Close menu">
+          <span></span>
+          <span></span>
+        </div>
+      </div>
+      <div class="nav__toggle" id="nav-toggle" aria-label="Open menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    </nav>
+  </header>
+
+  <main class="section" id="all-projects">
+    <div class="container">
+      <div class="section__header">
+        <h1 class="section__title">All Projects</h1>
+        <p class="section__subtitle">Explore the complete list of our showcased work.</p>
+      </div>
+      <!-- Filters -->
+      <div class="portfolio__filters" role="tablist" aria-label="Portfolio filters">
+        <button class="filter__btn active" data-filter="all" role="tab" aria-selected="true">All</button>
+        <button class="filter__btn" data-filter="web" role="tab" aria-selected="false">Web</button>
+        <button class="filter__btn" data-filter="mobile" role="tab" aria-selected="false">Mobile</button>
+        <button class="filter__btn" data-filter="saas" role="tab" aria-selected="false">SaaS</button>
+      </div>
+
+      <div class="portfolio__grid">
+        <!-- Project 1 -->
+        <article class="portfolio__card hover-raise" data-category="web wordpress">
+          <div class="portfolio__image">
+            <img src="images/ecommerc.png" alt="Modern E-Commerce Platform" class="portfolio__screenshot" />
+            <div class="portfolio__overlay">
+              <div class="portfolio__actions">
+                <a href="#" class="portfolio__link" aria-label="View project"><span>View Project</span></a>
+                <button class="portfolio__quickview" aria-label="Quick view details">Quick View</button>
+              </div>
+            </div>
+          </div>
+          <div class="portfolio__content">
+            <h3 class="portfolio__title">Modern E-Commerce Platform</h3>
+            <p class="portfolio__description">Full-featured online store with payment integration, inventory management, and analytics dashboard for a fashion retailer.</p>
+            <div class="portfolio__tags">
+              <span class="tag">React</span><span class="tag">Node.js</span><span class="tag">MongoDB</span><span class="tag">Stripe</span>
+            </div>
+            <ul class="portfolio__metrics">
+              <li><strong>Result:</strong> +45% conversion rate increase</li>
+              <li><strong>Timeline:</strong> 8 weeks</li>
+              <li><strong>Revenue:</strong> +300% online sales growth</li>
+            </ul>
+          </div>
+        </article>
+        <!-- Project 2 -->
+        <article class="portfolio__card hover-raise" data-category="mobile">
+          <div class="portfolio__image">
+            <img src="images/Ria Academy App.png" alt="Ria Academy App" class="portfolio__screenshot" />
+            <div class="portfolio__overlay">
+              <div class="portfolio__actions">
+                <a href="#" class="portfolio__link" aria-label="View project"><span>View Project</span></a>
+                <button class="portfolio__quickview" aria-label="Quick view details">Quick View</button>
+              </div>
+            </div>
+          </div>
+          <div class="portfolio__content">
+            <h3 class="portfolio__title">Ria Academy App</h3>
+            <p class="portfolio__description">The official application of Raya Academy, but note that it has not been launched yet</p>
+            <div class="portfolio__tags">
+              <span class="tag">Flutter</span><span class="tag">Firebase</span><span class="tag">Biometrics</span><span class="tag">AI/ML</span>
+            </div>
+            <ul class="portfolio__metrics">
+              <li><strong>Result:</strong> 99.9% uptime achieved</li>
+              <li><strong>Timeline:</strong> 12 weeks</li>
+              <li><strong>Users:</strong> 50K+ active users</li>
+            </ul>
+          </div>
+        </article>
+        <!-- Project 3 -->
+        <article class="portfolio__card hover-raise" data-category="saas">
+          <div class="portfolio__image">
+            <img src="images/Analytics SaaS Platform.png" alt="Analytics SaaS Platform" class="portfolio__screenshot" />
+            <div class="portfolio__overlay">
+              <div class="portfolio__actions">
+                <a href="#" class="portfolio__link" aria-label="View project"><span>View Project</span></a>
+                <button class="portfolio__quickview" aria-label="Quick view details">Quick View</button>
+              </div>
+            </div>
+          </div>
+          <div class="portfolio__content">
+            <h3 class="portfolio__title">Analytics SaaS Platform</h3>
+            <p class="portfolio__description">Comprehensive business intelligence platform with real-time data visualization, custom reporting, and automated insights.</p>
+            <div class="portfolio__tags">
+              <span class="tag">Vue.js</span><span class="tag">Python</span><span class="tag">D3.js</span><span class="tag">PostgreSQL</span>
+            </div>
+            <ul class="portfolio__metrics">
+              <li><strong>Result:</strong> -30% customer churn</li>
+              <li><strong>Timeline:</strong> 10 weeks</li>
+              <li><strong>Performance:</strong> 2.5s avg load time</li>
+            </ul>
+          </div>
+        </article>
+        <!-- Project 4 -->
+        <article class="portfolio__card hover-raise" data-category="web" data-case-url="images/_C__Users_RIADH_Desktop_programming_hotbox_index.html.png">
+          <div class="portfolio__image">
+            <img src="images/Premium Restaurant Website.png" alt="Premium Restaurant Website" class="portfolio__screenshot" />
+            <div class="portfolio__overlay">
+              <div class="portfolio__actions">
+                <a href="images/_C__Users_RIADH_Desktop_programming_hotbox_index.html.png" class="portfolio__link" aria-label="View project" target="_blank" rel="noopener"><span>View Project</span></a>
+                <button class="portfolio__quickview" aria-label="Quick view details">Quick View</button>
+              </div>
+            </div>
+          </div>
+          <div class="portfolio__content">
+            <h3 class="portfolio__title">Premium Restaurant Website</h3>
+            <p class="portfolio__description">Elegant restaurant website with online reservations, menu management, delivery integration, and customer review system.</p>
+            <div class="portfolio__tags">
+              <span class="tag">WordPress</span><span class="tag">PHP</span><span class="tag">WooCommerce</span><span class="tag">OpenTable</span>
+            </div>
+            <ul class="portfolio__metrics">
+              <li><strong>Result:</strong> +120% online bookings</li>
+              <li><strong>Timeline:</strong> 4 weeks</li>
+              <li><strong>SEO:</strong> Page 1 Google ranking</li>
+            </ul>
+          </div>
+        </article>
+        <!-- Project 5 -->
+        <article class="portfolio__card hover-raise" data-category="web">
+          <div class="portfolio__image">
+            <img src="images/Ria Academy Services Website.png" alt="Ria Academy Services Website" class="portfolio__screenshot" />
+            <div class="portfolio__overlay">
+              <div class="portfolio__actions">
+                <a href="#" class="portfolio__link" aria-label="View project"><span>View Project</span></a>
+                <button class="portfolio__quickview" aria-label="Quick view details">Quick View</button>
+              </div>
+            </div>
+          </div>
+          <div class="portfolio__content">
+            <h3 class="portfolio__title">Ria Academy Services Website</h3>
+            <p class="portfolio__description">We are definitely the ones who developed this website that you are watching us from 😁</p>
+            <div class="portfolio__tags">
+              <span class="tag">HTML</span><span class="tag">CSS</span><span class="tag">JavaScript</span>
+            </div>
+            <ul class="portfolio__metrics">
+              <li><strong>Status:</strong> Live</li>
+              <li><strong>Role:</strong> Full Development</li>
+              <li><strong>Year:</strong> 2025</li>
+            </ul>
+          </div>
+        </article>
+        
+        <!-- Project 6: Ria Academy website -->
+        <article class="portfolio__card hover-raise" data-category="web" data-case-url="images/_C__xampp_htdocs_RiaAcademy_public_Homepage.html.png">
+          <div class="portfolio__image">
+            <img src="images/RiaAcxademy.png" alt="Ria Academy website" class="portfolio__screenshot" />
+            <div class="portfolio__overlay">
+              <div class="portfolio__actions">
+                <a href="images/_C__xampp_htdocs_RiaAcademy_public_Homepage.html.png" class="portfolio__link" aria-label="View project" target="_blank" rel="noopener"><span>View Project</span></a>
+                <button class="portfolio__quickview" aria-label="Quick view details">Quick View</button>
+              </div>
+            </div>
+          </div>
+          <div class="portfolio__content">
+            <h3 class="portfolio__title">Ria Academy website</h3>
+            <p class="portfolio__description">This is the official website of Ria Academy, which offers courses in many fields.</p>
+            <div class="portfolio__tags">
+              <span class="tag">HTML</span><span class="tag">CSS</span><span class="tag">JavaScript</span>
+            </div>
+          </div>
+        </article>
+      </div>
+
+      <div class="portfolio__back">
+        <a href="index.html#portfolio" class="btn btn--outline">Back to Main Site</a>
+      </div>
+    </div>
+  </main>
+
+  <!-- Portfolio Quick View Modal (mirrored from index.html) -->
+  <div class="modal" id="portfolio-modal" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="portfolio-modal-title">
+    <div class="modal__overlay" data-close="modal"></div>
+    <div class="modal__content" role="document">
+      <button class="modal__close" aria-label="Close modal" data-close="modal">&times;</button>
+      <div class="modal__header">
+        <h3 id="portfolio-modal-title" class="modal__title">Project Title</h3>
+        <div class="modal__tags"></div>
+      </div>
+      <div class="modal__body">
+        <div class="modal__image">
+          <div class="image-placeholder"><span>Preview</span></div>
+        </div>
+        <div class="modal__details">
+          <p class="modal__description">Project description goes here.</p>
+          <ul class="modal__metrics"></ul>
+          <div class="modal__actions">
+            <a href="#" target="_blank" rel="noopener" class="btn btn--primary modal__visit">Visit Project</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer class="footer" style="padding:2rem 0; text-align:center;">
+    <p style="font-size:0.875rem; color:var(--text-muted);">&copy; 2025 Ria Academy Services.</p>
+  </footer>
+  <script src="assets/js/script.js" defer></script>
+</body>
+</html>
