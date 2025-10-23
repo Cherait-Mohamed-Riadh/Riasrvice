@@ -1162,6 +1162,10 @@ document.addEventListener('click', (e) => {
   if (e.target.matches('.social__link')) {
     trackEvent('Social Click', 'External Link', e.target.getAttribute('aria-label'));
   }
+  if (e.target.closest('a[href^="tel:"]')) {
+    const link = e.target.closest('a[href^="tel:"]');
+    trackEvent('Phone Click', 'Contact', link.getAttribute('href'));
+  }
   if (e.target.closest && e.target.closest('.blog__link')) {
     const card = e.target.closest('.blog__card');
     const title = card?.querySelector('.blog__title')?.textContent?.trim() || 'Blog Post';
@@ -1469,7 +1473,7 @@ function init3DModel() {
 
   // Scene setup
   const scene = new THREE.Scene();
-  const camera = new THREE.PerspectiveCamera(75, canvas.clientWidth / canvas.clientHeight, 0.1, 1000);
+  const camera = new THREE.PerspectiveCamera(60, canvas.clientWidth / canvas.clientHeight, 0.1, 1000);
   const renderer = new THREE.WebGLRenderer({ 
     canvas: canvas, 
     antialias: true, 
@@ -1484,7 +1488,7 @@ function init3DModel() {
   // Photorealistic rendering settings
   renderer.outputEncoding = THREE.sRGBEncoding;
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
-  renderer.toneMappingExposure = 1.0;
+  renderer.toneMappingExposure = 1.1;
   renderer.physicallyCorrectLights = true;
   renderer.shadowMap.autoUpdate = true;
   renderer.shadowMap.needsUpdate = true;
@@ -1494,13 +1498,66 @@ function init3DModel() {
   renderer.info = renderer.info || {};
   renderer.gammaFactor = 2.2;
   renderer.dithering = true;
+
+  // Smooth camera controls (mouse + touch)
+  // We prefer camera OrbitControls over manual model-rotation for better UX
+  let controls = null;
+  let lastInteractionTime = Date.now();
+  if (typeof THREE.OrbitControls !== 'undefined') {
+    controls = new THREE.OrbitControls(camera, renderer.domElement);
+    controls.enableDamping = true;
+    controls.dampingFactor = 0.08;
+    controls.enableRotate = true;
+    controls.enablePan = false;
+    controls.enableZoom = true;
+    controls.minDistance = 4;
+    controls.maxDistance = 14;
+    controls.target.set(0, 0.6, 0);
+    controls.autoRotate = true;
+    controls.autoRotateSpeed = 0.5;
+    controls.addEventListener('start', () => { controls.autoRotate = false; lastInteractionTime = Date.now(); });
+    controls.addEventListener('end', () => {
+      lastInteractionTime = Date.now();
+      setTimeout(() => { if (Date.now() - lastInteractionTime > 3000) controls.autoRotate = true; }, 3000);
+    });
+  }
+
+  // Post-processing pipeline for more realism
+  let composer = null, renderPass = null, bloomPass = null, fxaaPass = null;
+  try {
+    if (typeof THREE.EffectComposer !== 'undefined' && typeof THREE.RenderPass !== 'undefined') {
+      composer = new THREE.EffectComposer(renderer);
+      renderPass = new THREE.RenderPass(scene, camera);
+      composer.addPass(renderPass);
+
+      // FXAA anti-aliasing
+      if (typeof THREE.ShaderPass !== 'undefined' && typeof THREE.FXAAShader !== 'undefined') {
+        fxaaPass = new THREE.ShaderPass(THREE.FXAAShader);
+        const width = Math.max(1, canvas.clientWidth), height = Math.max(1, canvas.clientHeight);
+        if (fxaaPass && fxaaPass.material && fxaaPass.material.uniforms && fxaaPass.material.uniforms['resolution']) {
+          fxaaPass.material.uniforms['resolution'].value.set(1 / width, 1 / height);
+        }
+        composer.addPass(fxaaPass);
+      }
+
+      // Subtle bloom for highlights
+      if (typeof THREE.UnrealBloomPass !== 'undefined') {
+        const resolution = new THREE.Vector2(Math.max(1, canvas.clientWidth), Math.max(1, canvas.clientHeight));
+        bloomPass = new THREE.UnrealBloomPass(resolution, 0.35, 0.4, 0.85);
+        composer.addPass(bloomPass);
+      }
+    }
+  } catch (e) {
+    console.warn('Postprocessing setup failed, continuing without it', e);
+    composer = null;
+  }
   
   // Enhanced lighting setup
   const hemiLight = new THREE.HemisphereLight(0xffffff, 0x202020, 0.6);
   hemiLight.position.set(0, 10, 0);
   scene.add(hemiLight);
 
-  const directionalLight = new THREE.DirectionalLight(0xffffff, 2.0);
+  const directionalLight = new THREE.DirectionalLight(0xffffff, 1.3);
   directionalLight.position.set(8, 12, 6);
   directionalLight.target.position.set(0, 0, 0);
   directionalLight.castShadow = true;
@@ -1520,7 +1577,7 @@ function init3DModel() {
   
   // Ground with soft shadows
   const groundGeometry = new THREE.PlaneGeometry(50, 50);
-  const groundMaterial = new THREE.ShadowMaterial({ opacity: 0.25 });
+  const groundMaterial = new THREE.ShadowMaterial({ opacity: 0.35 });
   const ground = new THREE.Mesh(groundGeometry, groundMaterial);
   ground.rotation.x = -Math.PI / 2;
   ground.position.y = -1.25;
@@ -1794,8 +1851,10 @@ function init3DModel() {
   try {
     if (typeof THREE.GLTFLoader !== 'undefined') {
       const loader = new THREE.GLTFLoader();
+      const glbPath = 'model/sci-fi_computer.glb';
+      console.log('Attempting to load GLB:', glbPath);
       loader.load(
-        'model/personal_computer.glb',
+        glbPath,
         (gltf) => {
           model = gltf.scene;
           model.traverse((obj) => {
@@ -1812,7 +1871,10 @@ function init3DModel() {
           scene.add(model);
         },
         undefined,
-        () => {
+        (error) => {
+          console.error('Failed to load GLB model:', glbPath, error);
+          const loadingIndicatorEl = document.getElementById('model-loading');
+          if (loadingIndicatorEl) loadingIndicatorEl.textContent = 'Loading 3D model failed. Showing fallback.';
           // Fallback to procedural model
           modelData = createDetailedComputer();
           model = modelData.group;
@@ -1841,14 +1903,14 @@ function init3DModel() {
   camera.position.set(4, 3, 6);
   camera.lookAt(0, 0, 0);
 
-  // Enhanced Mouse and Touch interaction
+  // Optional manual model rotation (used only if OrbitControls is unavailable)
   let isInteracting = false;
   let previousMousePosition = { x: 0, y: 0 };
   let rotationVelocity = { x: 0, y: 0 };
   let targetRotation = { x: 0, y: 0 };
   let currentRotation = { x: 0, y: 0 };
   let autoRotate = true;
-  let lastInteractionTime = Date.now();
+  const usingCustomControls = !controls;
 
   // Mouse Events
   function onMouseDown(event) {
@@ -1942,36 +2004,36 @@ function init3DModel() {
     }, 3000);
   }
 
-  // Add event listeners
-  canvas.addEventListener('mousedown', onMouseDown);
-  canvas.addEventListener('mousemove', onMouseMove);
-  canvas.addEventListener('mouseup', onMouseUp);
-  canvas.addEventListener('mouseleave', onMouseUp);
-  
-  // Touch events
-  canvas.addEventListener('touchstart', onTouchStart, { passive: false });
-  canvas.addEventListener('touchmove', onTouchMove, { passive: false });
-  canvas.addEventListener('touchend', onTouchEnd, { passive: false });
+  // Add event listeners only when not using OrbitControls
+  if (usingCustomControls) {
+    canvas.addEventListener('mousedown', onMouseDown);
+    canvas.addEventListener('mousemove', onMouseMove);
+    canvas.addEventListener('mouseup', onMouseUp);
+    canvas.addEventListener('mouseleave', onMouseUp);
+    // Touch events
+    canvas.addEventListener('touchstart', onTouchStart, { passive: false });
+    canvas.addEventListener('touchmove', onTouchMove, { passive: false });
+    canvas.addEventListener('touchend', onTouchEnd, { passive: false });
+  }
 
   // Animation loop
   function animate() {
     requestAnimationFrame(animate);
 
-    if (model) {
+    if (usingCustomControls && model) {
       // Auto rotation when not interacting
       if (autoRotate && Date.now() - lastInteractionTime > 3000) {
         targetRotation.y += 0.003;
       }
-
       // Smooth rotation interpolation
       currentRotation.x += (targetRotation.x - currentRotation.x) * 0.05;
       currentRotation.y += (targetRotation.y - currentRotation.y) * 0.05;
-      
       model.rotation.x = currentRotation.x;
       model.rotation.y = currentRotation.y;
     }
 
-    renderer.render(scene, camera);
+    if (controls) controls.update();
+    if (composer) composer.render(); else renderer.render(scene, camera);
   }
 
   animate();
@@ -1986,6 +2048,10 @@ function init3DModel() {
     camera.aspect = width / height;
     camera.updateProjectionMatrix();
     renderer.setSize(width, height);
+    if (composer) composer.setSize(width, height);
+    if (fxaaPass && fxaaPass.material && fxaaPass.material.uniforms && fxaaPass.material.uniforms['resolution']) {
+      fxaaPass.material.uniforms['resolution'].value.set(1 / width, 1 / height);
+    }
   }
 
   window.addEventListener('resize', onWindowResize);
